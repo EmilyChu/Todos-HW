@@ -5,9 +5,9 @@ require "./lib/all"
 puts "Running Todos"
 
 def add (name, description) 
-  # List.find_or_create_by(name: name).items.create(description: description)
-  List.find_or_create_by(name: name)
-  List.find_by(name: name).items.create(description: description)
+  List.find_or_create_by(name: name).items.create(description: description)
+  # List.find_or_create_by(name: name)
+  # List.find_by(name: name).items.create(description: description)
 end
 
 def due (n, date)
@@ -21,7 +21,7 @@ end
 def l_ist  
   x = Item.where(done: false)
   x.each do |item|
-  print "Task: #{item.description} \tDue Date: #{item.due_date} \tCompletiion: #{item.done}"
+  print "Task: #{item.description} \tDue Date: #{item.due_date} \tCompletion: #{item.done}"
   puts
 end
 end
