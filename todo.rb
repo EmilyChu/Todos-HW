@@ -21,7 +21,8 @@ end
 def l_ist  
   x = Item.where(done: false)
   x.each do |item|
-  print "#{item.description} \t\t#{item.due_date}\t\t#{item.done}"
+  print "Task: #{item.description} \tDue Date: #{item.due_date} \tCompletiion: #{item.done}"
+  puts
 end
 end
 
@@ -45,10 +46,27 @@ def list_all
   end
 end
 
-def next
+def random
+  tasks = Item.all.sample.description
+  print "#{tasks}"
+  puts
+end
+
+def priority
+  must_do_tasks = Item.where.not(due_date: nil)
+  x = must_do_tasks.order(due_date: :asc).first
+    print "Deadline nearing on Item#: #{x.id}\t#{x.description}\t#{x.due_date}"
 end
 
 def search (string)
+  phrase = string
+  tasks = Item.all
+  print "These are the tasks matching your search: "
+  tasks.each do |z|
+    if /#{phrase}/.match(z.description)
+      puts "#{z.description}"
+    end
+  end  
 end
 
 
@@ -73,9 +91,12 @@ when "given_list"
 when "list_all"
   list_all
 when "next"
-
+  random
+when "priority"
+  priority
 when "search"
-
+  s = ARGV.shift
+  search(s)
 end
 
 
