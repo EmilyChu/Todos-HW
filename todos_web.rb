@@ -4,48 +4,32 @@ require "./db/setup"
 require "./lib/all"
 
 class Todoweb < Sinatra::Base
-  # set :bind, '0.0.0.0'
-  # set :port, '4567' 
 
-  get '/items' do
-    items=[]
-    x = Item.where(done: false)
-     # x.to_json        # triggers join error
-    x.each do |item|
-      y = item.description
-      items<<y
-    end
-    items.each do |i|
-      print i+" "+"\n"  #formatting doesn't work
-    end
+  get '/list/:name' do
+    list_with_tasks =[]
+    x = List.find_by(name: params["name"])
+    y = Item.where(list_id: x.id)
+    z = y.pluck(:description)
+      unless y == []
+        list_with_tasks<< z
+      end
+    return list_with_tasks.to_json    
   end
 
-  get '/lists' do
-    x = List.all
-    x.to_json
-  #   x.each do |x|
-  #     y = Item.where(list_id: x.id)
-  #     unless y == []
-  #     print x.name
-  #     print y["description"]
-  #   end
-  end
-
-# curl -XPOST http://localhost:4567/lists -d"name: "Drinks"
-# curl -i -XPOST http://localhost:4567/lists -d"name=SecondTest" -d"description=is my second param working" 
-  post '/lists' do
+  post '/list/:name' do
     List.find_or_create_by(name: params["name"]).items.create!(description: params["description"])
     "ACCEPTED"
   end
 
-# curl -i -XPATCH http://localhost:4567/items -d"id=2" -d"due_date=April 1 2015"
-# HTTParty.patch("http://localhost:4567/items", body:{id: '10',due_date: 'March 17 2015'})
-  patch '/items' do
-    Item.find_by(id: params["id"]).update(due_date: params["due_date"])
-    "GET TO IT"
+  patch '/due/:id' do
+    if params[:id]
+      d = Date.parse(params[:due_date])
+      t= Item.find_by(id: params["id"])
+      t.update!(due_date: d)
+    end
   end
 
-  delete '/items' do
+  delete '/item/:id' do
     Item.find_by(id: params["id"]).update(done: params["done"])
     "CHECKKKKK"
   end
