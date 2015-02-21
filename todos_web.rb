@@ -1,4 +1,4 @@
-require 'sinatra'
+require 'sinatra/base'
 require 'pry'
 require "./db/setup"
 require "./lib/all"
@@ -38,18 +38,35 @@ class Todoweb < Sinatra::Base
     "ACCEPTED"
   end
 
+# curl -i -XPATCH http://localhost:4567/items -d"id=2" -d"due_date=April 1 2015"
+# HTTParty.patch("http://localhost:4567/items", body:{id: '10',due_date: 'March 17 2015'})
+  patch '/items' do
+    Item.find_by(id: params["id"]).update(due_date: params["due_date"])
+    "GET TO IT"
+  end
+
+  delete '/items' do
+    Item.find_by(id: params["id"]).update(done: params["done"])
+    "CHECKKKKK"
+  end
+
+  get '/next' do
+    tasks = Item.all.sample.description
+  end
+
+  get '/search' do
+    phrase = params["description"]
+    tasks = Item.all
+    winning_tasks = []
+    tasks.each do |t|
+      if /#{phrase}/.match(t.description)
+        winning_tasks<< t.description
+      else
+      end
+    end 
+    winning_tasks 
+  end
+
 end
 
 Todoweb.run!
-
-# GET   /list   - lists all lists 
-# GET   /items  - lists all items(tasks)
-# POST  /lists   - adds a new list and/or task to existing list
-
-# GET   /
-#       /gifs/random    {random with a tag
-
-# PATCH   /items/27?item=description
-
-# DELETE  /gifs ? id=5    {can only delete “my” gifs
-#         /gifs/5
