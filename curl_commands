@@ -1,0 +1,65 @@
+curl -XPOST http://localhost:4567/lists -d"name: "Drinks"
+
+curl -i -XPOST http://localhost:4567/lists -d"name=SecondTest" -d"description=is my second param working" 
+
+
+curl -i -XPATCH http://localhost:4567/items -d"id=2" -d"due_date=April 1 2015"
+HTTParty.patch("http://localhost:4567/items", body:{id: '10',due_date: 'March 17 2015'})
+
+
+curl -i -XPATCH http://localhost:4567/due/13 -d"due_date=December 31, 2015"
+HTTParty.patch("http://localhost:4567/items/13", body: {due_date: 'December 31, 2015'})
+
+curl -i -XDELETE http://localhost:4567/item/3 -d"done=true"
+
+HTTParty.patch("http://localhost:4567/list/Chores", body: {description: 'Dust around the house'}, headers: {"Authorization" => "token", "User-Agent" => "Emily"})
+
+
+
+  # get '/items' do
+  #   items=[]
+  #   x = Item.where(done: false)
+  #   x.each do |item|
+  #     y = item.description
+  #     items<<y
+  #   end
+  #   items.each do |i|
+  #     print i+" "+"\n"  #formatting doesn't work
+  #   end
+  # end
+
+  # get '/lists' do
+  #   lists =[]
+  #   x = List.all
+  #   x.each do |x|
+  #     y = Item.where(list_id: x.id)
+  #     z = y.pluck(:description)
+  #     unless y == []
+  #       lists<< z
+  #     end
+  #   end
+  #   return lists.to_json
+  # end
+
+  # patch '/item/:id' do
+  #   Item.find_by(id: params["id"]).update(due_date: params["due_date"])
+  #   "GET TO IT"
+  # end
+
+  # patch '/due/:id' do
+  #   if params[:id]
+  #     d = Date.parse(params[:due])
+  #     id_number = params[:id]
+  #     t = Task.find_by(id: id_number)
+  #     t.due = d
+  #     t.save!
+  #   end
+  # end
+
+  # post "/lists/:list_name" do
+  #  a = current_user.lists.find_or_create_by! list_name: params[:list_name]
+  #  b = a.add params["item"], a.id
+  #  if params["due_date"]
+  #    b.due! params["due_date"]
+  #  end
+  # end

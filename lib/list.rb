@@ -1,5 +1,5 @@
 class List < ActiveRecord::Base
-  belongs_to :users
+  belongs_to :user
   has_many :items
 
   def add_list list_name
