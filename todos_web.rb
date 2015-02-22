@@ -5,6 +5,14 @@ require "./lib/all"
 
 class Todoweb < Sinatra::Base
 
+  def current_user
+    # username = params["user"]
+    # # username = request.env["HTTP_AUTHORIZATION"]
+    # User.find_by_name username
+    u=User.first
+    return u
+  end
+
   get '/list/:name' do
     list_with_tasks =[]
     x = List.find_by(name: params["name"])
@@ -13,12 +21,17 @@ class Todoweb < Sinatra::Base
       unless y == []
         list_with_tasks<< z
       end
-    return list_with_tasks.to_json    
+    return list_with_tasks.to_json
   end
 
   post '/list/:name' do
-    List.find_or_create_by(name: params["name"]).items.create!(description: params["description"])
-    "ACCEPTED"
+    t = current_user.lists.create! description: params["description"]
+    if params["name"]
+      t.add_list params["name"]
+    end
+    t.to_json
+    # List.find_or_create_by(name: params["name"]).items.create!(description: params["description"])
+    # "ACCEPTED"
   end
 
   patch '/due/:id' do
@@ -50,7 +63,6 @@ class Todoweb < Sinatra::Base
     end 
     winning_tasks 
   end
-
 end
 
 Todoweb.run!
