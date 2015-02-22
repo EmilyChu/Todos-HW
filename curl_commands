@@ -14,6 +14,8 @@ curl -i -XDELETE http://localhost:4567/item/3 -d"done=true"
 
 HTTParty.patch("http://localhost:4567/list/Chores", body: {description: 'Dust around the house'}, headers: {"Authorization" => "token", "User-Agent" => "Emily"})
 
+curl -i -XPOST http://localhost:4567/list/SecondTest -d"description=is user id working"
+
 
 
   # get '/items' do

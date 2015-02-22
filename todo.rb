@@ -4,8 +4,8 @@ require "./lib/all"
 
 puts "Running Todos"
 
-def add (name, description) 
-  List.find_or_create_by(name: name).items.create(description: description)
+def add (name, description, user_id) 
+  List.find_or_create_by(name: name).items.create(description: description, user_id: user_id)
   # List.find_or_create_by(name: name)
   # List.find_by(name: name).items.create(description: description)
 end
@@ -75,7 +75,8 @@ case command
 when "add"
   list = ARGV.shift
   item =ARGV.shift
-  add(list, item)
+  user_id = ARGV.shift
+  add(list, item, user_id)
 when "due"
   n = ARGV.shift
   date = ARGV.shift

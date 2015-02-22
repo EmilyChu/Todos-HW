@@ -2,8 +2,9 @@ class List < ActiveRecord::Base
   belongs_to :user
   has_many :items
 
-  def add_list list_name
-    l = List.find_or_create_by(name: list_name)
-    self.lists<< l
+  def add_item description
+    i = Item.create!(description: description)
+    self.items<< i
   end
+  
 end

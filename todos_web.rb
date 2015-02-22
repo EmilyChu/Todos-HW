@@ -14,54 +14,39 @@ class Todoweb < Sinatra::Base
   end
 
   get '/list/:name' do
-    list_with_tasks =[]
-    x = List.find_by(name: params["name"])
-    y = Item.where(list_id: x.id)
-    z = y.pluck(:description)
-      unless y == []
-        list_with_tasks<< z
-      end
-    return list_with_tasks.to_json
+    t = current_user.lists.find_by(name: params["name"])
+    t.items.pluck(:description).to_json
   end
 
   post '/list/:name' do
-    t = current_user.lists.create! description: params["description"]
+    t = current_user.lists.find_or_create_by(name: params["name"])
     if params["name"]
-      t.add_list params["name"]
+      t.add_item params["description"]
     end
     t.to_json
-    # List.find_or_create_by(name: params["name"]).items.create!(description: params["description"])
-    # "ACCEPTED"
   end
 
   patch '/due/:id' do
     if params[:id]
+      t = current_user.items.find_by(id: params["id"])
       d = Date.parse(params[:due_date])
-      t= Item.find_by(id: params["id"])
-      t.update!(due_date: d)
+      t.due(d)
     end
   end
 
   delete '/item/:id' do
-    Item.find_by(id: params["id"]).update(done: params["done"])
-    "CHECKKKKK"
+    t = current_user.items.find_by(id: params["id"])
+    t.complete
   end
 
   get '/next' do
-    tasks = Item.all.sample.description
+    t = current_user.items.sample.description
   end
 
   get '/search' do
-    phrase = params["description"]
-    tasks = Item.all
-    winning_tasks = []
-    tasks.each do |t|
-      if /#{phrase}/.match(t.description)
-        winning_tasks<< t.description
-      else
-      end
-    end 
-    winning_tasks 
+    t = current_user.items
+    u = current_user.id
+    t.match(u, params["description"])
   end
 end
 
