@@ -7,15 +7,21 @@ class Todoweb < Sinatra::Base
 
   def current_user
     # username = params["user"]
-    username = request.env["HTTP_AUTHORIZATION"]
-    User.find_by_name username
-    # u=User.first
-    # return u
+    # username = request.env["HTTP_AUTHORIZATION"]
+    # User.find_by_name username
+    u=User.first
+  end
+
+  get '/todos' do 
+    `say -v "Whisper" "This is your task manager"`
+    "<h1> This is your task manager </h1>"
   end
 
   get '/list/:name' do
-    t = current_user.lists.find_by(name: params["name"])
-    t.items.pluck(:description).to_json
+    @list_name = current_user.lists.find_by(name: params["name"])
+    @specific_list = @list_name.items.pluck(:description)
+
+    erb :list
   end
 
   post '/list/:name' do
