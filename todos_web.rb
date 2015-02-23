@@ -7,10 +7,10 @@ class Todoweb < Sinatra::Base
 
   def current_user
     # username = params["user"]
-    # # username = request.env["HTTP_AUTHORIZATION"]
-    # User.find_by_name username
-    u=User.first
-    return u
+    username = request.env["HTTP_AUTHORIZATION"]
+    User.find_by_name username
+    # u=User.first
+    # return u
   end
 
   get '/list/:name' do

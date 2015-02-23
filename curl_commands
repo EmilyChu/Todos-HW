@@ -16,6 +16,7 @@ HTTParty.patch("http://localhost:4567/list/Chores", body: {description: 'Dust ar
 
 curl -i -XPOST http://localhost:4567/list/SecondTest -d"description=is user id working"
 
+HTTParty.get("http://localhost:4567/search", body: {"description" => 'veggies'}, headers: {"Authorization" => "Emily"})
 
 
   # get '/items' do
