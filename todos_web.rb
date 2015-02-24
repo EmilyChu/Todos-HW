@@ -14,13 +14,14 @@ class Todoweb < Sinatra::Base
 
   get '/todos' do 
     `say -v "Whisper" "This is your task manager"`
-    "<h1> This is your task manager </h1>"
+    @lists = current_user.lists
+    @items = current_user.items
+    erb :everything
   end
 
   get '/list/:name' do
     @list_name = current_user.lists.find_by(name: params["name"])
-    @specific_list = @list_name.items.pluck(:description)
-
+    @specific_list = @list_name.items
     erb :list
   end
 

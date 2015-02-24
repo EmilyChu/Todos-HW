@@ -5,8 +5,23 @@
   </head>
   <body>
     <div class="container">
-    <h1> This is your task manager </h1>
-    <h2> These are all your tasks: </h2>
+    <h1> Task Manager </h1>
+    <h3> These are your To Do Lists... </h3>
+      <table class="table table-striped table-hover table-bordered">
+        <thead>
+          <tr>
+          <th> Lists </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @lists.each do |list| %>
+            <tr> 
+              <td> <a href="/list/<%=list.name%>"><%= list.name %></a> </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <h3> These are all your tasks: </h3>
     <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
@@ -16,22 +31,15 @@
         </tr>
       </thead>
       <tbody>
-        <% @everything.each do |task| %>
+        <% @items.each do |item| %>
             <tr> 
-              <td> <%= task.description %> </td>
-              <td> <%= task.due_date %> </td>
-              <td> <%= task.done %> </td>
+              <td> <%= item.description %> </td>
+              <td> <%= item.due_date %> </td>
+              <td> <%= item.done %> </td>
             </tr>
           <% end %>
       </tbody>
     </table>
-    <div class="well">
-      <form action="/list" method="GET">
-        <input name="name" class="form-control">
-        <!-- <input type="submit" value="Search"> -->
-        <button class="btn btn-primary">Search</button>
-      </form>
-    </div>
     </div>
   </body>
 </html>
