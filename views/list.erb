@@ -10,14 +10,21 @@
       <thead>
         <tr>
         <th> Description </th>
-        <!--<th> Due Date </th>
-        <th> Completed? </th>-->
+        <th> Due Date </th>
+        <th> Completion Status </th>
         </tr>
       </thead>
       <tbody>
         <% @specific_list.each do |task| %>
             <tr> 
               <td> <%= task.description %> </td>
+              <td> <%= task.due_date %> </td>
+              <td> <%= task.done %> </td>
+                <% if task.done == true %>
+                  <td><input type="checkbox" id="blankCheckbox" value="option1" checked aria-label="..."></td>
+                <% else %>
+                  <td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                <% end %>
             </tr>
           <% end %>
       </tbody>
