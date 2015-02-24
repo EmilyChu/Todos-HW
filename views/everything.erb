@@ -36,6 +36,11 @@
               <td> <%= item.description %> </td>
               <td> <%= item.due_date %> </td>
               <td> <%= item.done %> </td>
+                <% if item.done == true %>
+                  <td><input type="checkbox" id="blankCheckbox" value="option1" checked aria-label="..."></td>
+                <% else %>
+                  <td><input type="checkbox" id="blankCheckbox" value="option1" aria-label="..."></td>
+                <% end %>
             </tr>
           <% end %>
       </tbody>

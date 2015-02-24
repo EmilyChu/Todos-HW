@@ -4,6 +4,7 @@ require "./db/setup"
 require "./lib/all"
 
 class Todoweb < Sinatra::Base
+  # set :method_override, true 
 
   def current_user
     # username = params["user"]
